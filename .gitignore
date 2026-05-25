@@ -1,0 +1,30 @@
+# big data
+*.h5ad
+*.pkl
+*.keras
+*.h5
+*.fa
+*.fasta
+*.fai
+*.bam
+*.bai
+*.bw
+*.bigwig
+*.bed.gz
+*.tsv.gz
+*.csv.gz
+
+# outputs
+runs/out/
+data/
+genomes/
+*.png
+*.pdf
+*.log
+*.err
+*.out
+
+# system/cache
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
