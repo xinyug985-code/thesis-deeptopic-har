@@ -1,5 +1,4 @@
-对，直接在 GitHub 网页里改最方便。
-我给你一个更正式、更像论文代码仓库的版本，你直接全覆盖 README.md 就行。
+
 
 ````markdown
 # DeepTopic-HAR: Fetal Brain Regulatory Grammar and Human Accelerated Region Analysis
