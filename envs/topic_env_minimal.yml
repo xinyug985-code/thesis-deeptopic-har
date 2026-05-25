@@ -1,0 +1,14 @@
+name: topic
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - numpy[version='<2']
+  - scipy
+  - python-igraph
+  - pynndescent
+  - leidenalg
+  - jupyterlab
+prefix: 
+  /cfs/klemming/projects/supr/snic2022-23-547/xinyu/miniconda3_broken_20260220/envs/topic
