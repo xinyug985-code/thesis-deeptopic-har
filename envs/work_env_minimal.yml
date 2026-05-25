@@ -1,0 +1,18 @@
+name: work
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pysam
+  - uv
+  - ipykernel
+  - jupyterlab
+  - samtools
+  - numpy=2.3.3
+  - pandas=2.3.3
+  - htslib
+  - biopython
+  - lxml
+  - html5lib
+prefix: /mimer/NOBACKUP/groups/naiss2025-22-612/xinyu/miniconda3/envs/work
