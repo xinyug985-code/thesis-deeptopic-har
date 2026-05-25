@@ -1,226 +1,35 @@
-# thesis-deeptopic-har
+对，直接在 GitHub 网页里改最方便。
+我给你一个更正式、更像论文代码仓库的版本，你直接全覆盖 README.md 就行。
+
 ````markdown
-# DeepTopic-HAR: Fetal Brain Regulatory Grammar and HAR Analysis
+# DeepTopic-HAR: Fetal Brain Regulatory Grammar and Human Accelerated Region Analysis
 
-Deep learning analysis of fetal brain regulatory grammar and Human Accelerated Regions (HARs) using single-cell ATAC-seq topic models.
+This repository contains the computational pipeline developed for a master thesis project focused on regulatory sequence grammar in fetal brain chromatin accessibility and the functional interpretation of Human Accelerated Regions (HARs).
 
-This repository contains the analysis pipeline developed for a master thesis project on fetal brain regulatory grammar and Human Accelerated Regions (HARs).
+The project combines:
 
-- pycisTopic topic modeling
-- CREsted topic-classification models
-- motif grammar discovery with TF-MoDISco
-- topic-to-celltype mapping
-- human vs macaque comparison
-- HAR scoring and interpretation
-- motif gain/loss analysis
-- in silico mutagenesis (ISM)
+- single-cell ATAC-seq topic modeling
+- deep learning sequence models
+- motif grammar discovery
+- cross-species comparison
+- HAR accessibility prediction
+- motif gain/loss interpretation
 
-Main biological goal:
-
-> Identify cell-type-associated regulatory grammar in fetal brain chromatin accessibility and use it to interpret evolutionary changes in Human Accelerated Regions (HARs).
-
----
-
-# Project Overview
-
-The workflow is organized into two major parts:
-
-## Part 1 — Regulatory Grammar Discovery
-
-Using fetal brain scATAC-seq topics as labels, CREsted CNN models are trained to predict topic accessibility directly from DNA sequence.
-
-Model interpretation is then used to identify:
-
-- topic-associated motifs
-- cell-type-associated motif modules
-- conserved vs species-biased regulatory grammar
-
-Main frameworks:
-
-- pycisTopic
-- CREsted
-- TF-MoDISco-lite
-- TomTom motif matching
-
-Species:
+Main species analyzed:
 
 - Human fetal brain
 - Macaque fetal brain
 
 ---
 
-## Part 2 — HAR Evolutionary Analysis
+# Biological Goal
 
-Human Accelerated Regions (HARs) are scored using trained sequence models to identify:
+The main objective of this project is to identify cell-type-associated regulatory grammar in developing brain chromatin accessibility and use it to interpret evolutionary sequence changes in Human Accelerated Regions (HARs).
 
-- predicted cell-state specificity
-- motif gain/loss
-- human-specific accessibility shifts
-- candidate regulatory mechanisms
-
-Selected HARs are further analyzed using:
-
-- contribution scores
-- sequence alignment
-- motif annotation
-- in silico mutagenesis (ISM)
-- humanized/macaquized sequence editing
-
----
-
-# Repository Structure
+The overall framework is:
 
 ```text
-scripts/
-├── preprocessing/       # Build h5ad and prepare datasets
-├── training/            # Train CREsted topic-classification models
-├── evaluation/          # Model evaluation and prediction
-├── motif_analysis/      # Contribution scores + TF-MoDISco
-├── har_analysis/        # HAR scoring and ISM
-├── plotting/            # Figure generation
-├── exploratory/         # Debugging / experimental scripts
-└── useless/             # Old or deprecated scripts
-````
-
----
-
-# Main Pipeline
-
-# 1. Build Topic Datasets
-
-Generate CREsted-compatible topic-by-region AnnData objects.
-
-Main outputs:
-
-* `human_topics.h5ad`
-* `macaque_topics.h5ad`
-
-Scripts:
-
-```text
-01_make_h5ad_human.py
-01_make_h5ad_macaque.py
-```
-
----
-
-# 2. Train Topic-Classification Models
-
-Train CNN models to predict topic accessibility from sequence.
-
-Scripts:
-
-```text
-02_train_human.py
-02_train_macaque.py
-```
-
-Outputs:
-
-```text
-final_model.keras
-```
-
-Models are trained using:
-
-* 500 bp sequence windows
-* CREsted deeptopic CNN
-* chromosome-based train/val/test split
-
----
-
-# 3. Evaluate Models
-
-Evaluate topic prediction performance.
-
-Scripts:
-
-```text
-03_eval_human.py
-03_eval_macaque.py
-```
-
-Typical outputs:
-
-* AUROC
-* confusion matrices
-* topic prediction summaries
-
----
-
-# 4. Motif Discovery (Stage2)
-
-This is the core regulatory grammar analysis step.
-
-Scripts:
-
-```text
-02_stage2_topic_modisco_top1000.py
-```
-
-Main operations:
-
-* generate prediction layers
-* build combined score matrix
-* region specificity filtering using Gini
-* contribution score calculation
-* TF-MoDISco motif discovery
-
-Outputs:
-
-* contribution scores
-* motif clusters
-* pattern matrices
-* motif logos
-
----
-
-# 5. Motif Annotation
-
-Scripts:
-
-```text
-03_stage3_summarize_modisco_h5.py
-04_stage3_modisco_pattern_matching.py
-05_stage4_process_patterns_matrix.py
-```
-
-Main outputs:
-
-* motif × topic matrices
-* motif × celltype matrices
-* TF annotation tables
-* clustered motif modules
-
----
-
-# 6. HAR Analysis
-
-Scripts:
-
-```text
-34_2_vs_ism.py
-36_2_brain.py
-36_5_pick.py
-36_8_val.py
-```
-
-Main analyses:
-
-* HAR topic scoring
-* human vs macaque comparison
-* motif gain/loss
-* contribution score interpretation
-* ISM mutation analysis
-
----
-
-# Biological Interpretation Strategy
-
-The workflow follows this logic:
-
-```text
-sequence
+DNA sequence
     ↓
 topic accessibility prediction
     ↓
@@ -232,101 +41,250 @@ motif grammar
     ↓
 cell-type interpretation
     ↓
-HAR evolutionary interpretation
-```
+HAR evolutionary analysis
+````
 
-Topics are first learned computationally using pycisTopic.
+---
 
-Topics are then mapped back to biological cell states using:
+# Workflow Overview
 
-* topic annotation
-* topic binarization
-* cell-topic enrichment
+The project consists of two connected components.
 
-Therefore:
+## 1. Regulatory Grammar Discovery
+
+Single-cell ATAC-seq data are processed using pycisTopic to generate regulatory topics.
+
+CREsted CNN models are then trained to predict topic accessibility directly from DNA sequence.
+
+Model interpretation methods are used to identify:
+
+* topic-associated motifs
+* cell-type-associated motif modules
+* conserved and species-biased regulatory grammar
+
+Main tools:
+
+* pycisTopic
+* CREsted
+* TF-MoDISco-lite
+* TomTom (MEME suite)
+
+---
+
+## 2. HAR Evolutionary Analysis
+
+Human Accelerated Regions (HARs) are scored using trained sequence models to identify:
+
+* predicted accessibility shifts
+* motif gain/loss
+* human-specific regulatory signatures
+* candidate developmental regulatory mechanisms
+
+Selected HARs are further analyzed using:
+
+* contribution scores
+* motif annotation
+* sequence alignment
+* in silico mutagenesis (ISM)
+
+---
+
+# Repository Structure
 
 ```text
-Model output = regulatory topics
-Biological interpretation = cell states / lineages
+upstream_pycistopic/
+    pycisTopic preprocessing and topic-modeling pipeline
+
+scripts/
+    downstream CREsted, motif, and HAR analysis scripts
+
+envs/
+    conda environment exports for reproducibility
+
+exploratory/
+    debugging and exploratory scripts
+
+useless/
+    deprecated or obsolete scripts
 ```
 
 ---
 
-# Species Comparison
+# Upstream Pipeline (pycisTopic)
 
-Human and macaque models are analyzed in parallel to identify:
+The upstream pipeline generates topic annotations from single-cell ATAC-seq data.
 
-* conserved motif grammar
-* species-biased motif usage
-* human-specific regulatory changes
+Typical workflow:
 
-Matched cell states are compared across species rather than directly comparing topic IDs.
+```text
+step0_prepare_manifest
+    ↓
+step1_make_cobj
+    ↓
+step2_run_lda
+    ↓
+step3_export_beds
+    ↓
+step4_region_analysis
+    ↓
+step5_figures
+    ↓
+step6_topic_annotation
+```
+
+Main outputs:
+
+* cisTopic objects
+* LDA topic models
+* topic BED files
+* topic annotation tables
+
+Main environment:
+
+```text
+topic
+```
+
+Environment files:
+
+```text
+envs/topic_env.yml
+envs/topic_env_minimal.yml
+```
 
 ---
 
-# Main Dependencies
+# Downstream Pipeline (CREsted)
 
-Core packages:
+CREsted models are trained to predict topic accessibility from DNA sequence.
 
-```text
-pycisTopic
-CREsted
-tensorflow / keras
-torch backend
-TF-MoDISco-lite
-pandas
-numpy
-scanpy
-anndata
-matplotlib
-seaborn
-```
+Main downstream analyses include:
 
-Additional tools:
+* topic prediction
+* contribution scores
+* TF-MoDISco motif discovery
+* motif clustering
+* motif-to-celltype mapping
+* HAR scoring
+* ISM analysis
+
+Main environment:
 
 ```text
-TomTom (MEME suite)
+work
 ```
+
+Additional motif environments:
+
+```text
+motif_env
+meme_env
+```
+
+---
+
+# Main Analysis Components
+
+## Topic Classification
+
+Train CNN models using topic accessibility labels.
+
+Outputs:
+
+* trained Keras models
+* prediction layers
+* evaluation metrics
+
+---
+
+## Motif Grammar Discovery
+
+Contribution scores are used for TF-MoDISco motif discovery and motif clustering.
+
+Outputs:
+
+* motif PWMs
+* motif clusters
+* topic-pattern matrices
+* celltype-pattern matrices
+
+---
+
+## HAR Analysis
+
+HARs are scored using trained sequence models to identify candidate human-specific regulatory changes.
+
+Main analyses:
+
+* human vs macaque accessibility prediction
+* motif gain/loss
+* contribution score interpretation
+* in silico mutagenesis (ISM)
 
 ---
 
 # Compute Environment
 
-Main HPC systems:
+Main HPC systems used:
 
-* Dardel (topic modeling / preprocessing)
-* Alvis (GPU model training and interpretation)
+| System | Purpose                                       |
+| ------ | --------------------------------------------- |
+| Dardel | pycisTopic preprocessing and topic modeling   |
+| Alvis  | CREsted model training and motif/HAR analysis |
 
 Typical GPU:
 
 ```text
-A100
+NVIDIA A100
+```
+
+---
+
+# Reproducibility
+
+Conda environment exports are provided in:
+
+```text
+envs/
+```
+
+Main exported environments:
+
+```text
+topic_env.yml
+work_env.yml
+motif_env.yml
+meme_env.yml
 ```
 
 ---
 
 # Notes
 
-* Large files are intentionally excluded from GitHub.
-* Models, h5ad files, genomes, and intermediate outputs are stored separately.
-* Many exploratory plotting/debugging scripts are archived in `exploratory/`.
+* Large intermediate files are intentionally excluded from GitHub.
+* Models, large matrices, genomes, and temporary outputs are stored separately on HPC systems.
+* The repository focuses on reproducible scripts, environments, and analysis workflows.
 
 ---
 
 # Thesis Focus
 
-This repository supports the thesis direction:
-
-> Build a fetal brain regulatory grammar atlas using sequence models and apply it to interpret evolutionary changes in Human Accelerated Regions.
-
 Main emphasis:
 
-* motif grammar
-* cell-state specificity
-* human vs macaque comparison
-* HAR mechanistic interpretation
+* regulatory grammar
+* fetal brain chromatin accessibility
+* topic-based sequence modeling
+* motif interpretation
+* cross-species comparison
+* Human Accelerated Regions (HARs)
 
 ---
+
+# Author
+
+Xinyu Gao
+
+Master thesis project in computational regulatory genomics.
 
 ```
 ```
